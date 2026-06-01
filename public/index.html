@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>TaskFlow</h1>
+
+    <div id="auth-section">
+      <div class="card">
+        <h2>Login</h2>
+        <input type="email" id="login-email" placeholder="Email" />
+        <input type="password" id="login-password" placeholder="Password" />
+        <button onclick="login()">Login</button>
+      </div>
+
+      <div class="card">
+        <h2>Register</h2>
+        <input type="text" id="reg-username" placeholder="Username" />
+        <input type="email" id="reg-email" placeholder="Email" />
+        <input type="password" id="reg-password" placeholder="Password" />
+        <button onclick="register()">Register</button>
+      </div>
+    </div>
+
+    <div id="tasks-section" style="display:none;">
+      <div class="card">
+        <h2>New Task</h2>
+        <input type="text" id="task-title" placeholder="Title" />
+        <input type="text" id="task-description" placeholder="Description" />
+        <button onclick="createTask()">Add Task</button>
+      </div>
+
+      <div class="card">
+        <h2>My Tasks</h2>
+        <ul id="task-list"></ul>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <p id="message"></p>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
