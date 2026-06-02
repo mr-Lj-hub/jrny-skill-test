@@ -50,11 +50,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # This step dynamically reads your context and forces everything to lowercase
+      # This step dynamically reads your context and forces the VALUE to lowercase.
+      # The var NAME must stay uppercase — env var names are case-sensitive.
       - name: Downcase Registry & Image Names
         run: |
-          echo "REGISTRY_LOWER=ghcr.io/${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_ENV
-          echo "IMAGE_NAME_LOWER=${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_ENV
+          OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          REPO=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]')
+          echo "REGISTRY_LOWER=ghcr.io/${OWNER}" >> $GITHUB_ENV
+          echo "IMAGE_NAME_LOWER=${REPO}" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
