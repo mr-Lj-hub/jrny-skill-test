@@ -90,6 +90,15 @@ function logout() {
   document.getElementById('tasks-section').style.display = 'none';
 }
 
-if (token) {
-  showTasks();
-}
+// ── Bind all event listeners on DOM ready (CSP-compliant — no inline handlers) ──
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('btn-login').addEventListener('click', login);
+  document.getElementById('btn-register').addEventListener('click', register);
+  document.getElementById('btn-add-task').addEventListener('click', createTask);
+  document.getElementById('btn-logout').addEventListener('click', logout);
+
+  // Auto-restore session if a token exists
+  if (token) {
+    showTasks();
+  }
+});
