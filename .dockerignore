@@ -1,0 +1,32 @@
+# Dependencies — installed inside the container via npm ci
+node_modules/
+npm-debug.log
+# Environment secrets — injected at runtime via docker-compose, never baked into image
+.env
+.env.*
+
+# Version control
+.git/
+.gitignore
+
+# Docker files (prevent recursive builds)
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# IDE & OS artifacts
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+
+# Build output
+dist/
+
+# Documentation (not needed at runtime)
+README.md
