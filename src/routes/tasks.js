@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', authMiddleware, async (req, res, next) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM tasks WHERE user_id = $1 ORDER BY created_at DESC',
+      'SELECT id, user_id, title, description, status, created_at, updated_at FROM tasks WHERE user_id = $1 ORDER BY created_at DESC',
       [req.user.id]
     );
     res.json(result.rows);
@@ -27,12 +27,9 @@ router.post('/', authMiddleware, createTaskRules, async (req, res, next) => {
   try {
     const { title, description, status } = req.body;
 
-    const allowedStatuses = ['pending', 'in_progress', 'completed'];
-    const taskStatus = allowedStatuses.includes(status) ? status : 'pending';
-
     const result = await pool.query(
       'INSERT INTO tasks (user_id, title, description, status) VALUES ($1, $2, $3, $4) RETURNING *',
-      [req.user.id, title.trim(), description || '', taskStatus]
+      [req.user.id, title.trim(), description || '', status || 'pending']
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {

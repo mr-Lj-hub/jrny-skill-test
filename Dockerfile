@@ -1,5 +1,5 @@
 # ============================================================
-# Stage 1: Install ALL dependencies (including devDependencies)
+# Stage 1: Install ALL dependencies and verify source integrity
 # ============================================================
 FROM node:20-alpine AS builder
 
@@ -13,6 +13,10 @@ COPY package.json package-lock.json ./
 # --ignore-scripts prevents post-install scripts from running during build
 # (mitigates supply-chain attacks from compromised packages).
 RUN npm ci --ignore-scripts
+
+# Copy source into builder — validates it exists and is structurally correct
+COPY src/ ./src/
+COPY public/ ./public/
 
 # ============================================================
 # Stage 2: Production image — minimal surface area
@@ -32,9 +36,9 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --ignore-scripts \
     && npm cache clean --force
 
-# Copy ONLY the application source — no .env, no .git, no node_modules (see .dockerignore)
-COPY src/ ./src/
-COPY public/ ./public/
+# Copy verified application source from builder stage
+COPY --from=builder /app/src/ ./src/
+COPY --from=builder /app/public/ ./public/
 
 # Security: drop all privileges — run as the built-in 'node' user (UID 1000)
 # This prevents container-escape attacks from gaining root on the host.
@@ -48,3 +52,4 @@ ENTRYPOINT ["/sbin/tini", "--"]
 
 # Start the application
 CMD ["node", "src/app.js"]
+

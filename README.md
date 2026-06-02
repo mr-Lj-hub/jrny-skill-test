@@ -43,14 +43,21 @@ Following a baseline security audit, all 14 identified architectural and data-la
 The platform leverages **Docker Compose** to handle all runtime compilation and container isolation, eliminating the need to manually install Node or PostgreSQL dependencies on the local host machine.
 
 ### 1. Environment Configuration Setup
-Create a file named `.env` inside your project's root folder and append these production-grade parameters:
+Create a file named `.env` inside your project's root folder (or copy `.env.example`) and set the values:
 ```env
 PORT=3000
+
+# Docker Compose uses these to create the PostgreSQL container
+POSTGRES_USER=taskflow_user
+POSTGRES_PASSWORD=changeme_in_production
+POSTGRES_DB=taskflow
+
+# App database connection (must match the Postgres credentials above)
 DATABASE_URL=postgresql://taskflow_user:changeme_in_production@db:5432/taskflow
+
 JWT_SECRET=production_ultra_secure_long_random_signing_key_2026
 JWT_EXPIRES_IN=24h
 ALLOWED_ORIGINS=http://localhost:3000
-
 ```
 
 ### 2. Orchestration Launch Execution
