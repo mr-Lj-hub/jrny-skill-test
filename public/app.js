@@ -59,7 +59,9 @@ async function loadTasks() {
   list.innerHTML = '';
   tasks.forEach((t) => {
     const li = document.createElement('li');
-    li.innerHTML = '<span>' + t.title + ' — ' + t.status + '</span>';
+    const span = document.createElement('span');
+    span.textContent = t.title + ' — ' + t.status;
+    li.appendChild(span);
     list.appendChild(li);
   });
 }

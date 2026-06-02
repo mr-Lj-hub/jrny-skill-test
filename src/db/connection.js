@@ -1,19 +1,16 @@
 const { Pool } = require('pg');
+const config = require('../config');
 
 const pool = new Pool({
-  connectionString: 'postgresql://admin:password123@localhost:5432/taskflow'
-});
-
-pool.on('connect', () => {
-  console.log('Connected to PostgreSQL');
+  connectionString: config.databaseUrl,
+  // Production pool tuning
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 5000,
 });
 
 pool.on('error', (err) => {
-  console.log('Unexpected database error', err);
+  console.error('Unexpected database pool error:', err.message);
 });
-
-// function query(text, params) {
-//   return pool.query(text, params);
-// }
 
 module.exports = pool;
